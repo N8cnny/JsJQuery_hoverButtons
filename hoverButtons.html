@@ -1,0 +1,179 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Intro to the DOM</title>
+<style type="text/css">
+	body {margin-left: 20px}
+	h2 {font-family: arial; text-decoration: underline; margin-top: 75px}
+	a:link {font-family: verdana; color: black; margin-right: 25px; border: 5px double red; padding: 8px;text-decoration: none; background-color: yellow}
+	.buttonsOver{background-color: blue !important; color: white !important; border-color:black !important}<!--the !important declaration is to override the background color, color, and border color in the a:link style rule
+	when adding in a class to an object via className in the javascript code-->
+	.buttonsOut{background-color: yellow !important; color: black !important; border-color:red !important}
+</style>
+
+<script src="http://code.jquery.com/jquery-latest.min.js"> </script>
+
+<script type="text/javascript">
+	if(window.addEventListener) {
+		//addEventListener is a DOM2 standard
+		//addEventListener("dom2Event", functionName, boolean);
+		window.addEventListener("load", createEventListeners, false);
+	}
+	else {
+	//IE8 and older will run this code, because IE and older don't understand addEventListener
+	//attachEvent("dom1Event", functionName);
+	window.attachEvent("onload", createEventListeners);
+	}
+	
+	function createEventListeners() {
+		//alert("hi there");
+		if(document.addEventListener) {
+			document.getElementById("b1").addEventListener("mouseover", changeTheLink, false);
+			
+			document.getElementById("b2").addEventListener("mouseover", changeTheLink, false);
+			
+			document.getElementById("b1").addEventListener("mouseout", changeTheLinkBack, false);
+			
+			document.getElementById("b2").addEventListener("mouseout", changeTheLinkBack, false);
+		}//end of if
+		else {
+		//for IE8 and previous
+		document.getElementById("b1").attachEvent("onmouseover", changeTheLink);
+			
+		document.getElementById("b2").attachEvent("onmouseover", changeTheLink);
+		
+		document.getElementById("b1").attachEvent("onmouseout", changeTheLinkBack);
+			
+		document.getElementById("b2").attachEvent("onmouseout", changeTheLinkBack);
+		}
+	}//end of createEventListeners
+	
+function changeTheLink(theTarget) {
+	//alert("changeTheLink is running");
+	//alert(theTarget.target.id);//hey browser, look inside theTarget variable, get the target, and tell me its ID
+	if(theTarget.target) {
+	/*	document.getElementById(theTarget.target.id).style.backgroundColor="blue";
+		document.getElementById(theTarget.target.id).style.color="white";
+		document.getElementById(theTarget.target.id).style.borderColor="black"; */
+		document.getElementById(theTarget.target.id).className="buttonsOver";
+	}//end of if
+	else {
+	//for IE8 and previous
+		/*document.getElementById(theTarget.srcElement.id).style.backgroundColor="blue";
+		document.getElementById(theTarget.srcElement.id).style.color="white";
+		document.getElementById(theTarget.srcElement.id).style.borderColor="black"; */
+		document.getElementById(theTarget.srcElement.id).className="buttonsOver";
+	}//end of else
+}//end of changeTheLink
+	
+function changeTheLinkBack(theTarget) {
+	//alert("changeTheLinkBack is running");
+	//alert(theTarget.target.id);//hey browser, look inside theTarget variable, get the target, and tell me its ID
+	if(theTarget.target) {
+		/*document.getElementById(theTarget.target.id).style.backgroundColor="yellow";
+		document.getElementById(theTarget.target.id).style.color="black";
+		document.getElementById(theTarget.target.id).style.borderColor="red";*/
+		document.getElementById(theTarget.target.id).className="buttonsOut";
+	}//end of if
+	else {
+	//for IE8 and previous
+		/*document.getElementById(theTarget.srcElement.id).style.backgroundColor="yellow";
+		document.getElementById(theTarget.srcElement.id).style.color="black";
+		document.getElementById(theTarget.srcElement.id).style.borderColor="red";*/
+		document.getElementById(theTarget.srcElement.id).className="buttonsOut";
+	}//end of else
+}//end of changeTheLink	
+	
+	
+	//*************************jQuery Script*******************
+/*
+pages 123-124
+$(document).ready(
+  (function(){
+       //all statements go inside the master container
+	   }//end of master container
+	  );// close ready	  
+
+OR
+	  
+jQuery(
+  (function(){
+       //all statements go inside the master container
+	   }//end of master container
+	  );// close master jQuery container
+ OR
+ $(
+  (function(){
+       //all statements go inside the master container
+	   }//end of master function
+	  );// close master jQuery container
+*/	
+
+jQuery(
+  function(){
+  /*$("a").mouseover(
+    function(){
+	  //css("css property", "value");
+	    $(this).css("background-color","white");//the 'this' keyword is the equivalent to javascript's target property
+	  }//end of mouseover function
+    );   //end of mouseover*/
+	
+	$("#jqLinks a").mouseover(
+	function(){
+	 /* $(this).css("background-color","blue");
+	  $(this).css("color","white");
+	  $(this).css("border-color","black");*/
+	  $(this).addClass("buttonsOver");
+	  }
+	);
+   $("#jqLinks a").mouseout(
+	function(){
+	  /*$(this).css("background-color","yellow");
+	  $(this).css("color","black");
+	  $(this).css("border-color","red");*/
+	  $(this).removeClass("buttonsOver");//when buttonsOver is removed, the style will go back to a:link
+	  }
+	);	
+
+	
+  }//end of master function
+);//end of function
+	
+
+
+</script>
+</head>
+
+<body>
+<!-- The Level 0 DOM was invented by Netscape at the same time JavaScript was invented and was first implemented in Netscape 2 -->
+<!-- Level 0 Dom used inline events, document.all (IE4 and IE5), and document.layers (Netscape 4) -->
+
+
+<!-- W3C (World Wide Web Consortium ) founded in 1994 to promote open standards for the World Wide Web -->
+<!--DOM Level 1 was published by W3C in late 1998. -->
+<!-- DOM Level 1 used inline events and node locaters such as links[ ] and images[ ] -->
+
+
+<!--DOM Level 2 was published by W3C in late 2000. It introduced the getElementById() method as well as an event model and support for XML namespaces and CSS. The event model was standardized. addEventListener() was also introduced in DOM level 2. Created to replace inline event listeners. -->
+<h2>
+	Dom 2 JavaScript (BUT IE5-IE8 uses attachEvent and srcElement which is not the DOM 2 standard!!)
+</h2>
+<a href="#" id="b1">Button 1</a>
+<a href="#" id="b2">Button 2</a>
+
+<!-- DOM Level 3 (the current release of the DOM specification), published in April 2004, added support for XPath and keyboard event handling, as well as an interface for serializing documents as XML -->
+
+<!-- DOM Level 4 is currently being developed. Draft version 6 was released in December 2012-->
+
+
+<h2>
+	jQuery
+</h2>
+<div id="jqLinks">
+  <a href="#">Button 1</a>
+  <a href="#">Button 2</a>
+</div>
+  
+  </body>
+</html>
